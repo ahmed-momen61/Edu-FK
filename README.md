@@ -84,7 +84,7 @@ Please ensure you have Node.js as your Runtime Environment, version 20 in LTS is
 2. Installation
 Clone the repository and then install any package that the application may depend on:
 
-```bash
+
 git clone https://github.com/ahmed-momen61/EduFlow-Backend.git
 cd EduFlow-Backend
 npm install
