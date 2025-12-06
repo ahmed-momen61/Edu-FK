@@ -5,7 +5,7 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, '../eduflow.db');
 
 const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) console.error('Error opening database:', err.message);
+    if (err) console.error('Error with the database:', err.message);
     else console.log('Connected to SQLite database.');
 });
 

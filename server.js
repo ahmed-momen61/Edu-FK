@@ -30,7 +30,7 @@ const upload = multer({ storage: storage });
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token;
 
-    if (!token) return res.status(401).json({ message: "Access Denied. Not Authenticated." });
+    if (!token) return res.status(401).json({ message: "Access Denied...Not Authenticated." });
 
     jwt.verify(token, process.env.JWT_SECRET || 'secret_key', (err, decoded) => {
         if (err) return res.status(403).json({ message: "Invalid Token" });
@@ -49,8 +49,6 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-//ROUTES
-
 // Auth Routes
 app.post('/api/auth/register', authController.register);
 app.post('/api/auth/login', authController.login);
@@ -61,5 +59,6 @@ app.post('/api/submit', verifyToken, upload.single('courseWork'), submissionCont
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`🚀 EduFlow Server running on port ${PORT}`);
+    console.log(`EduFlow knowledge Server running on port ${PORT}`);
+    console.log(`paste the following link pass in ur test envirounment http://localhost:3000/...folowing it with ur endpoint`);
 });

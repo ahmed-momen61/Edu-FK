@@ -2,7 +2,7 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-//Sign Token with Device Fingerprinting
+//Link the Token with the Device Fingerprinting
 const signToken = (id, role, req) => {
     const userAgent = req.headers['user-agent'] || 'unknown';
     const ip = req.ip;
@@ -17,7 +17,7 @@ exports.register = (req, res) => {
     const { fullName, email, password, role } = req.body;
 
     if (!fullName || !email || !password || !role) {
-        return res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "please make sure you filled out the all fields" });
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -28,7 +28,7 @@ exports.register = (req, res) => {
 
     db.run(query, [fullName, email, hash, role], function(err) {
         if (err) {
-            if (err.message.includes('UNIQUE')) return res.status(400).json({ message: "Email already exists" });
+            if (err.message.includes('UNIQUE')) return res.status(400).json({ message: "you already have an account" });
             return res.status(500).json({ error: err.message });
         }
         console.log(`[AUTH] New User Registered: ${email}`);
@@ -46,7 +46,7 @@ exports.login = (req, res) => {
         if (err) return res.status(500).json({ error: "Database error" });
 
         if (!user) {
-            console.log(`[AUTH FAIL] IP: ${req.ip} - User not found`);
+            console.log(`[AUTH FAIL] IP: ${req.ip} - User not found...please sign up first`);
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
@@ -64,13 +64,13 @@ exports.login = (req, res) => {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
-            maxAge: 3600000 // 1 hour
+            maxAge: 3600000
         });
 
         console.log(`[AUTH SUCCESS] User ${user.ID} logged in.`);
 
         res.json({
-            message: "Login successful",
+            message: `welcome ${FULL_NAME} :)`,
             user: {
                 id: user.ID,
                 email: user.EMAIL,
@@ -83,5 +83,5 @@ exports.login = (req, res) => {
 
 exports.logout = (req, res) => {
     res.clearCookie('token');
-    res.json({ message: "Logged out successfully" });
+    res.json({ message: "see you soon :(" });
 };

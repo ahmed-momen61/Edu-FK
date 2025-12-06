@@ -18,14 +18,14 @@ exports.submitAssignment = (req, res) => {
 
         console.log(`[SUBMISSION] Student ${studentId} uploaded file type: ${fileType}`);
 
-        //Notification for Instructor
+        //Instructor Notification
         if (instructorId) {
-            const notifMsg = `Student ID ${studentId} submitted a new assignment.`;
+            const notifMsg = `Student ID ${studentId} submitted something.`;
             db.run(`INSERT INTO NOTIFICATION (USER_ID, MESSAGE) VALUES (?, ?)`, [instructorId, notifMsg], (err) => {
                 if (!err) console.log(`[NOTIF] Sent to Instructor ${instructorId}`);
             });
         }
 
-        res.status(201).json({ message: "Assignment submitted successfully" });
+        res.status(201).json({ message: "submitted successfully" });
     });
 };
